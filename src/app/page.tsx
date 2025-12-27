@@ -163,8 +163,41 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="bg-gray-900 px-6 py-12 lg:px-8">
-        <div className="mx-auto max-w-7xl text-center text-gray-400">
-          <p>&copy; 2025 AgentBook. Built for the AI-native future.</p>
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mb-8">
+            <div>
+              <h3 className="text-white font-semibold mb-4">For Businesses</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link href="/register" className="hover:text-white transition-colors">Sign Up</Link></li>
+                <li><Link href="/demo" className="hover:text-white transition-colors">Demo</Link></li>
+                <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-white font-semibold mb-4">For Developers</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link href="/ai-docs" className="hover:text-white transition-colors">API Documentation</Link></li>
+                <li><Link href="/api/ai/openapi.json" className="hover:text-white transition-colors">OpenAPI Spec</Link></li>
+                <li><a href="https://github.com" className="hover:text-white transition-colors">GitHub</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-white font-semibold mb-4">🤖 AI Agents</h3>
+              <p className="text-gray-400 text-sm">
+                Looking to integrate booking capabilities? Visit our{' '}
+                <Link href="/ai-docs" className="text-primary-400 hover:text-primary-300">
+                  AI API documentation
+                </Link>
+                {' '}or access our{' '}
+                <Link href="/api/ai/openapi.json" className="text-primary-400 hover:text-primary-300">
+                  OpenAPI specification
+                </Link>.
+              </p>
+            </div>
+          </div>
+          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
+            <p>&copy; 2025 AgentBook. Built for the AI-native future.</p>
+          </div>
         </div>
       </footer>
     </main>

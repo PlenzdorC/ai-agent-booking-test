@@ -23,7 +23,7 @@ export async function GET() {
       },
     ],
     paths: {
-      '/ai/services': {
+      '/api/ai/services': {
         get: {
           summary: 'List all services for a company',
           description: 'Get all available services offered by a company',
@@ -80,7 +80,7 @@ export async function GET() {
           },
         },
       },
-      '/ai/availability': {
+      '/api/ai/availability': {
         get: {
           summary: 'Get available time slots',
           description: 'Retrieve available booking slots for a specific service',
@@ -137,7 +137,7 @@ export async function GET() {
           },
         },
       },
-      '/ai/reservations': {
+      '/api/ai/reservations': {
         post: {
           summary: 'Create a new booking',
           description: 'Book an appointment for a customer',

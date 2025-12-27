@@ -1,0 +1,93 @@
+===============================================
+AGENTBOOK - AI BOOKING API INSTRUCTIONS
+===============================================
+
+For AI Agents (ChatGPT, Claude, etc.)
+
+BASE URL: https://ai-agent-booking-test-4eol-oy1oxh8mr.vercel.app
+
+OpenAPI Specification: https://ai-agent-booking-test-4eol-oy1oxh8mr.vercel.app/api/ai/openapi.json
+
+===============================================
+TEST COMPANY AVAILABLE
+===============================================
+
+Company Slug: test-dental
+Company Name: Test Dental Clinic
+Services: Dental Checkup, Dental Cleaning, Teeth Whitening
+
+===============================================
+API ENDPOINTS
+===============================================
+
+1. GET /api/ai/services?company={company-slug}
+   Description: Get list of all services for a company
+   Example: /api/ai/services?company=test-dental
+   Returns: Company info and list of services with IDs
+
+2. GET /api/ai/availability?company={company-slug}&serviceId={uuid}&days={number}
+   Description: Get available time slots for a service
+   Example: /api/ai/availability?company=test-dental&serviceId=d11ab103-2f17-47ad-8a81-9aa5845b3811&days=7
+   Returns: Array of available ISO datetime slots
+
+3. POST /api/ai/reservations
+   Description: Create a new booking
+   Content-Type: application/json
+   Body:
+   {
+     "companySlug": "test-dental",
+     "serviceId": "uuid-from-services-endpoint",
+     "slot": "2025-12-30T14:00:00Z",
+     "customer": {
+       "name": "Customer Name",
+       "email": "customer@example.com",
+       "phone": "+1234567890"
+     },
+     "notes": "Optional booking notes",
+     "agentName": "ChatGPT"
+   }
+   Returns: Booking confirmation with confirmation number
+
+===============================================
+BOOKING WORKFLOW
+===============================================
+
+Step 1: Call /api/ai/services?company=test-dental
+        Extract service IDs from response
+
+Step 2: Call /api/ai/availability with selected service ID
+        Get available time slots
+
+Step 3: Confirm details with user before booking
+
+Step 4: POST to /api/ai/reservations with booking details
+        Provide confirmation number to user
+
+===============================================
+IMPORTANT NOTES
+===============================================
+
+- Always confirm with user before creating a booking
+- All datetime values are in ISO 8601 format (UTC)
+- Confirmation numbers are returned after successful booking
+- No authentication required for these endpoints
+- All responses are JSON format
+- Error responses include helpful "hint" fields
+
+===============================================
+EXAMPLE CONVERSATION
+===============================================
+
+User: "Book me a dental cleaning"
+
+Agent:
+1. GET /api/ai/services?company=test-dental
+2. Find "Dental Cleaning" service
+3. GET /api/ai/availability with that service ID
+4. Show user available times
+5. User confirms a time
+6. POST to /api/ai/reservations
+7. Return confirmation: "Booked! Confirmation #ABC123"
+
+===============================================
+

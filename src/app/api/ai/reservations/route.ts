@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabase, supabaseAdmin } from '@/lib/supabase'
 import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'
@@ -91,8 +91,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create booking
-    const { data: booking, error: bookingError } = await supabase
+    // Create booking (use admin client to bypass RLS)
+    const { data: booking, error: bookingError } = await supabaseAdmin
       .from('bookings')
       .insert({
         company_id: company.id,
@@ -221,8 +221,8 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    // Update booking status to cancelled
-    const { data: booking, error } = await supabase
+    // Update booking status to cancelled (use admin client to bypass RLS)
+    const { data: booking, error } = await supabaseAdmin
       .from('bookings')
       .update({ status: 'cancelled' })
       .eq('id', bookingId)

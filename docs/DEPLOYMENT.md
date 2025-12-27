@@ -123,10 +123,16 @@ npm run db:seed
 
 ```bash
 # Test services endpoint
-curl https://your-domain.com/ai/services?company=test-dental
+curl http://localhost:3000/ai/services?company=test-dental
 
 # Test availability
-curl https://your-domain.com/ai/availability?company=test-dental&serviceId=SERVICE_ID
+curl "http://localhost:3000/ai/availability?company=test-dental&serviceId=d11ab103-2f17-47ad-8a81-9aa5845b3811&days=7"
+
+# Test services endpoint
+curl https://ai-agent-booking-test-4eol-oy1oxh8mr.vercel.app/ai/services?company=test-dental
+
+# Test availability
+curl "https://ai-agent-booking-test-4eol-oy1oxh8mr.vercel.app/ai/availability?company=test-dental&serviceId=d11ab103-2f17-47ad-8a81-9aa5845b3811&days=7"
 
 # Test booking (replace with actual values)
 curl -X POST https://your-domain.com/ai/reservations \
