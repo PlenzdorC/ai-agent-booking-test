@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, Bot, Calendar, Zap, Shield, Clock, Globe } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
@@ -133,12 +134,12 @@ export default function HomePage() {
             </h2>
           </div>
           <div className="mt-16 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
-            <UseCase emoji="🏥" name={t.home.useCases.medical} />
-            <UseCase emoji="💇" name={t.home.useCases.salons} />
-            <UseCase emoji="🍽️" name={t.home.useCases.restaurants} />
-            <UseCase emoji="⚖️" name={t.home.useCases.legal} />
-            <UseCase emoji="💼" name={t.home.useCases.consulting} />
-            <UseCase emoji="🏋️" name={t.home.useCases.fitness} />
+            <UseCase image="/images/categories/medical.jpg" name={t.home.useCases.medical} />
+            <UseCase image="/images/categories/salons.jpg" name={t.home.useCases.salons} />
+            <UseCase image="/images/categories/restaurants.jpg" name={t.home.useCases.restaurants} />
+            <UseCase image="/images/categories/legal.jpg" name={t.home.useCases.legal} />
+            <UseCase image="/images/categories/consulting.jpg" name={t.home.useCases.consulting} />
+            <UseCase image="/images/categories/fitness.jpg" name={t.home.useCases.fitness} />
           </div>
         </div>
       </section>
@@ -257,11 +258,21 @@ function Step({
   )
 }
 
-function UseCase({ emoji, name }: { emoji: string; name: string }) {
+function UseCase({ image, name }: { image: string; name: string }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-6 text-center hover:border-primary-300 hover:shadow-sm transition-all">
-      <div className="text-4xl mb-2">{emoji}</div>
-      <div className="text-sm font-semibold text-gray-900">{name}</div>
+    <div className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-white overflow-hidden hover:border-primary-300 hover:shadow-lg transition-all group">
+      <div className="w-full h-32 relative overflow-hidden bg-gray-100">
+        <Image 
+          src={image} 
+          alt={name}
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-300"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+        />
+      </div>
+      <div className="p-4 w-full bg-white">
+        <div className="text-sm font-semibold text-gray-900 text-center">{name}</div>
+      </div>
     </div>
   )
 }
