@@ -227,7 +227,7 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
             disabled={loading}
             className="flex-1 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
           >
-            {loading ? 'Booking...' : 'Confirm Booking'}
+            {loading ? 'Booking...' : 'Confirm Booking Test'}
           </button>
         </div>
       </form>

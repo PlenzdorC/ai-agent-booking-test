@@ -135,12 +135,12 @@ curl https://ai-agent-booking-test-4eol-oy1oxh8mr.vercel.app/ai/services?company
 curl "https://ai-agent-booking-test-4eol-oy1oxh8mr.vercel.app/ai/availability?company=test-dental&serviceId=d11ab103-2f17-47ad-8a81-9aa5845b3811&days=7"
 
 # Test booking (replace with actual values)
-curl -X POST https://your-domain.com/ai/reservations \
+curl -X POST https://ai-agent-booking-test-4eol-oy1oxh8mr.vercel.app/api/ai/reservations \
   -H "Content-Type: application/json" \
   -d '{
     "companySlug": "test-dental",
-    "serviceId": "SERVICE_ID",
-    "slot": "2025-02-01T14:00:00Z",
+    "serviceId": "d11ab103-2f17-47ad-8a81-9aa5845b3811",
+    "slot": "2025-12-28T10:00:00Z",
     "customer": {
       "name": "Test User",
       "email": "test@example.com"
