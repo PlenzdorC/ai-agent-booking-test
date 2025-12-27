@@ -279,6 +279,59 @@ export async function GET() {
             },
           },
         },
+        patch: {
+          operationId: 'updateBooking',
+          summary: 'Edit or reschedule a booking',
+          description: 'Change the time, service, or notes for an existing booking',
+          requestBody: {
+            required: true,
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  required: ['bookingId', 'email'],
+                  properties: {
+                    bookingId: { 
+                      type: 'string', 
+                      format: 'uuid',
+                      description: 'Booking ID to update'
+                    },
+                    email: { 
+                      type: 'string', 
+                      format: 'email',
+                      description: 'Customer email for verification'
+                    },
+                    newSlot: { 
+                      type: 'string', 
+                      format: 'date-time',
+                      description: 'New appointment time (optional)'
+                    },
+                    newServiceId: { 
+                      type: 'string', 
+                      format: 'uuid',
+                      description: 'New service ID (optional)'
+                    },
+                    notes: { 
+                      type: 'string',
+                      description: 'Updated notes (optional)'
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            200: {
+              description: 'Booking updated successfully',
+            },
+            404: {
+              description: 'Booking not found',
+            },
+            409: {
+              description: 'New time slot not available',
+            },
+          },
+        },
         delete: {
           operationId: 'cancelBooking',
           summary: 'Cancel a booking',

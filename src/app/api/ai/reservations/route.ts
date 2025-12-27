@@ -207,6 +207,152 @@ export async function GET(request: NextRequest) {
   }
 }
 
+// PATCH /ai/reservations - Edit/reschedule a booking
+export async function PATCH(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { bookingId, email, newSlot, newServiceId, notes } = body
+
+    if (!bookingId || !email) {
+      return NextResponse.json(
+        { error: 'Missing booking ID or email' },
+        { status: 400 }
+      )
+    }
+
+    // Get the existing booking
+    const { data: existingBooking, error: fetchError } = await supabase
+      .from('bookings')
+      .select('*, service:services(duration_minutes, name), company:companies(id, name)')
+      .eq('id', bookingId)
+      .eq('customer_email', email)
+      .single()
+
+    if (fetchError || !existingBooking) {
+      return NextResponse.json(
+        { error: 'Booking not found' },
+        { status: 404 }
+      )
+    }
+
+    if (existingBooking.status === 'cancelled') {
+      return NextResponse.json(
+        { error: 'Cannot edit a cancelled booking' },
+        { status: 400 }
+      )
+    }
+
+    // Prepare update data
+    const updates: any = {}
+    
+    // If changing the time slot
+    if (newSlot) {
+      const newStartTime = new Date(newSlot)
+      const serviceDuration = existingBooking.service.duration_minutes
+      const newEndTime = new Date(newStartTime)
+      newEndTime.setMinutes(newEndTime.getMinutes() + serviceDuration)
+
+      // Check if new slot is available
+      const { data: conflictingBookings } = await supabase
+        .from('bookings')
+        .select('id')
+        .eq('company_id', existingBooking.company.id)
+        .neq('id', bookingId) // Exclude current booking
+        .in('status', ['pending', 'confirmed'])
+        .lte('start_time', newEndTime.toISOString())
+        .gte('end_time', newStartTime.toISOString())
+
+      if (conflictingBookings && conflictingBookings.length > 0) {
+        return NextResponse.json(
+          { error: 'New time slot is not available' },
+          { status: 409 }
+        )
+      }
+
+      updates.start_time = newStartTime.toISOString()
+      updates.end_time = newEndTime.toISOString()
+    }
+
+    // If changing the service
+    if (newServiceId) {
+      const { data: newService, error: serviceError } = await supabase
+        .from('services')
+        .select('id, name, duration_minutes')
+        .eq('id', newServiceId)
+        .eq('company_id', existingBooking.company.id)
+        .single()
+
+      if (serviceError || !newService) {
+        return NextResponse.json(
+          { error: 'Service not found' },
+          { status: 404 }
+        )
+      }
+
+      updates.service_id = newServiceId
+      
+      // Recalculate end time with new service duration
+      if (newSlot || !updates.start_time) {
+        const startTime = new Date(newSlot || existingBooking.start_time)
+        const endTime = new Date(startTime)
+        endTime.setMinutes(endTime.getMinutes() + newService.duration_minutes)
+        updates.end_time = endTime.toISOString()
+      }
+    }
+
+    // Update notes if provided
+    if (notes !== undefined) {
+      updates.notes = notes
+    }
+
+    // Update the booking
+    const { data: updatedBooking, error: updateError } = await supabaseAdmin
+      .from('bookings')
+      .update(updates)
+      .eq('id', bookingId)
+      .eq('customer_email', email)
+      .select(`
+        *,
+        service:services(name, duration_minutes),
+        company:companies(name, phone, email)
+      `)
+      .single()
+
+    if (updateError) {
+      console.error('Update error:', updateError)
+      return NextResponse.json(
+        { error: 'Failed to update booking' },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Booking updated successfully',
+      booking: {
+        id: updatedBooking.id,
+        confirmationNumber: updatedBooking.id.split('-')[0].toUpperCase(),
+        company: updatedBooking.company.name,
+        service: updatedBooking.service.name,
+        startTime: updatedBooking.start_time,
+        endTime: updatedBooking.end_time,
+        customer: {
+          name: updatedBooking.customer_name,
+          email: updatedBooking.customer_email,
+        },
+        status: updatedBooking.status,
+        notes: updatedBooking.notes,
+      },
+    })
+  } catch (error) {
+    console.error('Error updating booking:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
+
 // DELETE /ai/reservations - Cancel a booking
 export async function DELETE(request: NextRequest) {
   try {
