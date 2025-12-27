@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
+export const dynamic = 'force-dynamic'
+
 // GET /ai/services - List all services for a company
 // This endpoint is designed to be easily consumable by AI agents
 export async function GET(request: NextRequest) {

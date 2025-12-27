@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 // OpenAPI specification for AI agents to discover and use the API
 // This is crucial for ChatGPT plugins, Claude integrations, etc.
 export async function GET() {

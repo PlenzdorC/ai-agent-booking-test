@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 import { generateTimeSlots, isSlotAvailable } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 // GET /ai/availability - Get available time slots for a service
 export async function GET(request: NextRequest) {
   try {
