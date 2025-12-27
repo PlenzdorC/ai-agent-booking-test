@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Calendar, Clock, User, Mail, Phone, Check } from 'lucide-react'
 
 interface Service {
@@ -26,6 +26,60 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
   const [customerEmail, setCustomerEmail] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
   const [confirmationNumber, setConfirmationNumber] = useState('')
+
+  // Expose API for AI agents to control the booking widget
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).AgentBookAPI = {
+        getServices: () => services,
+        selectService: (serviceId: string) => {
+          const service = services.find(s => s.id === serviceId)
+          if (service) {
+            handleServiceSelect(service)
+            return { success: true, service: service.name }
+          }
+          return { success: false, error: 'Service not found' }
+        },
+        getAvailableSlots: () => availableSlots,
+        selectSlot: (slot: string) => {
+          if (availableSlots.includes(slot)) {
+            handleSlotSelect(slot)
+            return { success: true, slot }
+          }
+          return { success: false, error: 'Slot not available' }
+        },
+        setCustomerInfo: (name: string, email: string, phone?: string) => {
+          setCustomerName(name)
+          setCustomerEmail(email)
+          if (phone) setCustomerPhone(phone)
+          return { success: true }
+        },
+        confirmBooking: async () => {
+          const form = document.querySelector('[data-ai-booking-form]') as HTMLFormElement
+          if (form) {
+            form.requestSubmit()
+            return { success: true, message: 'Booking submitted' }
+          }
+          return { success: false, error: 'Form not ready' }
+        },
+        getState: () => ({
+          currentStep: step,
+          selectedService: selectedService?.name,
+          selectedSlot,
+          customerName,
+          customerEmail,
+          totalAvailableSlots: availableSlots.length,
+          confirmationNumber,
+        }),
+      }
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        delete (window as any).AgentBookAPI
+      }
+    }
+  }, [services, availableSlots, step, selectedService, selectedSlot, customerName, customerEmail, confirmationNumber])
 
   const handleServiceSelect = async (service: Service) => {
     setSelectedService(service)
@@ -148,7 +202,7 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
 
   if (step === 'details') {
     return (
-      <form onSubmit={handleBooking} className="space-y-6">
+      <form onSubmit={handleBooking} data-ai-booking-form className="space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Details</h3>
           
@@ -171,6 +225,8 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
                   required
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
+                  data-ai-field="customer-name"
+                  aria-label="Your full name for the booking"
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="John Doe"
                 />
@@ -189,6 +245,8 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
                   required
                   value={customerEmail}
                   onChange={(e) => setCustomerEmail(e.target.value)}
+                  data-ai-field="customer-email"
+                  aria-label="Your email address for booking confirmation"
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="john@example.com"
                 />
@@ -206,6 +264,8 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
                   id="phone"
                   value={customerPhone}
                   onChange={(e) => setCustomerPhone(e.target.value)}
+                  data-ai-field="customer-phone"
+                  aria-label="Your phone number (optional)"
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="+1 (555) 000-0000"
                 />
@@ -277,8 +337,11 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
                       <button
                         key={slot}
                         onClick={() => handleSlotSelect(slot)}
-                        data-ai-action="select-time-slot"
-                        data-slot={slot}
+                        data-ai-action="select-timeslot"
+                        data-ai-slot={slot}
+                        data-ai-date={date}
+                        data-ai-time={time}
+                        aria-label={`Book appointment at ${time} on ${date}`}
                         className="px-4 py-2 border border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-sm font-medium"
                       >
                         {time}
@@ -305,7 +368,11 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
             onClick={() => handleServiceSelect(service)}
             disabled={loading}
             data-ai-action="select-service"
-            data-service-id={service.id}
+            data-ai-service-id={service.id}
+            data-ai-service-name={service.name}
+            data-ai-duration={service.duration_minutes}
+            data-ai-price={service.price}
+            aria-label={`Select ${service.name} - ${service.duration_minutes} minutes - ${service.price ? `${service.currency} ${service.price}` : 'pricing varies'}`}
             className="w-full text-left p-4 border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <h4 className="font-semibold text-gray-900">{service.name}</h4>
