@@ -189,3 +189,6 @@ Having trouble? Check:
 - `/api/ai/openapi.json` for technical spec
 - GitHub issues for common problems
 
+
+
+hey i wanna book a dental checkup in new york any available appointsments?

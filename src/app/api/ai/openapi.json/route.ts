@@ -16,11 +16,11 @@ export async function GET() {
         name: 'AgentBook API Support',
         email: 'api@agentbook.com',
       },
-      termsOfService: `${process.env.NEXT_PUBLIC_APP_URL || 'https://ai-agent-booking-test-4eol-oy1oxh8mr.vercel.app'}/privacy`,
+      termsOfService: `${process.env.NEXT_PUBLIC_APP_URL || 'https://ai-agent-booking-test.vercel.app'}/privacy`,
     },
     servers: [
       {
-        url: process.env.NEXT_PUBLIC_APP_URL || 'https://agentbook.com',
+        url: process.env.NEXT_PUBLIC_APP_URL || 'https://ai-agent-booking-test.vercel.app',
         description: 'Production server',
       },
     ],
