@@ -64,7 +64,7 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
     '@type': 'ReserveAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: `${process.env.NEXT_PUBLIC_APP_URL}/api/ai/reservations`,
+      urlTemplate: `${process.env.NEXT_PUBLIC_APP_URL}/ai/reservations`,
       httpMethod: 'POST',
       contentType: 'application/json',
     },

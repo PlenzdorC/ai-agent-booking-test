@@ -34,7 +34,7 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
     try {
       // Fetch available slots
       const response = await fetch(
-        `/api/ai/availability?company=${companySlug}&serviceId=${service.id}&days=14`
+        `/ai/availability?company=${companySlug}&serviceId=${service.id}&days=14`
       )
       const data = await response.json()
       setAvailableSlots(data.slots || [])
@@ -57,7 +57,7 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
     setLoading(true)
 
     try {
-      const response = await fetch('/api/ai/reservations', {
+      const response = await fetch('/ai/reservations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

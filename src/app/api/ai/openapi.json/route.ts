@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
+export const revalidate = 0 // Disable caching
 
 // OpenAPI specification for AI agents to discover and use the API
 // This is crucial for ChatGPT plugins, Claude integrations, etc.
@@ -23,7 +24,7 @@ export async function GET() {
       },
     ],
     paths: {
-      '/api/ai/services': {
+      '/ai/services': {
         get: {
           summary: 'List all services for a company',
           description: 'Get all available services offered by a company',
@@ -80,7 +81,7 @@ export async function GET() {
           },
         },
       },
-      '/api/ai/availability': {
+      '/ai/availability': {
         get: {
           summary: 'Get available time slots',
           description: 'Retrieve available booking slots for a specific service',
@@ -137,7 +138,7 @@ export async function GET() {
           },
         },
       },
-      '/api/ai/reservations': {
+      '/ai/reservations': {
         post: {
           summary: 'Create a new booking',
           description: 'Book an appointment for a customer',
@@ -236,6 +237,12 @@ export async function GET() {
     },
   }
 
-  return NextResponse.json(openApiSpec)
+  return NextResponse.json(openApiSpec, {
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+      'CDN-Cache-Control': 'no-store',
+      'Vercel-CDN-Cache-Control': 'no-store'
+    }
+  })
 }
 

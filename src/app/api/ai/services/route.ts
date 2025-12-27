@@ -71,8 +71,8 @@ export async function GET(request: NextRequest) {
         aiOptimized: true,
         version: '1.0',
         endpoints: {
-          availability: `/api/ai/availability?company=${companySlug}&serviceId={serviceId}`,
-          book: `/api/ai/reservations`,
+          availability: `/ai/availability?company=${companySlug}&serviceId={serviceId}`,
+          book: `/ai/reservations`,
         }
       }
     }
