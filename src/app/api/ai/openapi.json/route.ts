@@ -7,7 +7,7 @@ export const revalidate = 0 // Disable caching
 // This is crucial for ChatGPT plugins, Claude integrations, etc.
 export async function GET() {
   const openApiSpec = {
-    openapi: '3.0.0',
+    openapi: '3.1.0',
     info: {
       title: 'AgentBook AI-Optimized Booking API',
       description: 'RESTful API designed for AI agents to book appointments and manage reservations',
@@ -26,6 +26,7 @@ export async function GET() {
     paths: {
       '/ai/services': {
         get: {
+          operationId: 'listServices',
           summary: 'List all services for a company',
           description: 'Get all available services offered by a company',
           parameters: [
@@ -83,6 +84,7 @@ export async function GET() {
       },
       '/ai/availability': {
         get: {
+          operationId: 'getAvailability',
           summary: 'Get available time slots',
           description: 'Retrieve available booking slots for a specific service',
           parameters: [
@@ -140,6 +142,7 @@ export async function GET() {
       },
       '/ai/reservations': {
         post: {
+          operationId: 'createBooking',
           summary: 'Create a new booking',
           description: 'Book an appointment for a customer',
           requestBody: {
@@ -179,6 +182,7 @@ export async function GET() {
           },
         },
         get: {
+          operationId: 'getBooking',
           summary: 'Get booking details',
           description: 'Retrieve details of a specific booking',
           parameters: [
@@ -202,6 +206,7 @@ export async function GET() {
           },
         },
         delete: {
+          operationId: 'cancelBooking',
           summary: 'Cancel a booking',
           description: 'Cancel an existing booking',
           parameters: [
@@ -227,6 +232,7 @@ export async function GET() {
       },
     },
     components: {
+      schemas: {},
       securitySchemes: {
         BearerAuth: {
           type: 'http',
