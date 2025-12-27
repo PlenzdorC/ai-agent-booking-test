@@ -10,6 +10,7 @@
     "type-check": "tsc --noEmit",
     "db:migrate": "supabase db push",
     "db:seed": "tsx scripts/seed.ts",
+    "db:seed:germany": "tsx scripts/seed-germany.ts",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\""
   },
   "dependencies": {
