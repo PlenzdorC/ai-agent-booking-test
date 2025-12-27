@@ -25,6 +25,82 @@ export async function GET() {
       },
     ],
     paths: {
+      '/ai/companies': {
+        get: {
+          operationId: 'searchCompanies',
+          summary: 'Search for companies by location or category',
+          description: 'Find businesses that use AgentBook. Search by city, state, category, or general search term.',
+          parameters: [
+            {
+              name: 'search',
+              in: 'query',
+              required: false,
+              schema: { type: 'string' },
+              description: 'Search term (searches name, city, and description)',
+            },
+            {
+              name: 'city',
+              in: 'query',
+              required: false,
+              schema: { type: 'string' },
+              description: 'Filter by city (e.g., "New York", "Los Angeles")',
+            },
+            {
+              name: 'state',
+              in: 'query',
+              required: false,
+              schema: { type: 'string' },
+              description: 'Filter by state (e.g., "NY", "CA")',
+            },
+            {
+              name: 'category',
+              in: 'query',
+              required: false,
+              schema: { type: 'string' },
+              description: 'Filter by business category (e.g., "dental", "salon", "medical")',
+            },
+            {
+              name: 'limit',
+              in: 'query',
+              required: false,
+              schema: { type: 'integer', default: 20 },
+              description: 'Maximum number of results to return',
+            },
+          ],
+          responses: {
+            200: {
+              description: 'List of matching companies',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      companies: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            name: { type: 'string' },
+                            slug: { type: 'string' },
+                            description: { type: 'string' },
+                            city: { type: 'string' },
+                            state: { type: 'string' },
+                            phone: { type: 'string' },
+                            email: { type: 'string' },
+                            servicesCount: { type: 'number' },
+                            bookingUrl: { type: 'string' },
+                          },
+                        },
+                      },
+                      total: { type: 'number' },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       '/ai/services': {
         get: {
           operationId: 'listServices',

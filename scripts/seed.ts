@@ -24,6 +24,13 @@ async function seed() {
       phone: '+1 (555) 123-4567',
       description: 'A friendly dental clinic for testing AI booking',
       timezone: 'America/New_York',
+      city: 'New York',
+      state: 'NY',
+      country: 'USA',
+      address: '123 Dental Street',
+      postal_code: '10001',
+      website: 'https://testdental.com',
+      is_active: true,
     })
     .select()
     .single()
