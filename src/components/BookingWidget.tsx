@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Calendar, Clock, User, Mail, Phone, Check } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface Service {
   id: string
@@ -17,6 +18,7 @@ interface BookingWidgetProps {
 }
 
 export default function BookingWidget({ companySlug, services }: BookingWidgetProps) {
+  const { t } = useLanguage()
   const [step, setStep] = useState<'service' | 'time' | 'details' | 'confirmed'>('service')
   const [selectedService, setSelectedService] = useState<Service | null>(null)
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
@@ -180,21 +182,21 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
         <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-6">
           <Check className="h-8 w-8 text-green-600" />
         </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">Booking Confirmed!</h3>
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">{t.booking.confirmed}</h3>
         <p className="text-gray-600 mb-4">
-          Your appointment has been successfully booked.
+          {t.booking.confirmationMessage}
         </p>
         <div className="bg-gray-50 rounded-lg p-6 mb-6 max-w-md mx-auto">
-          <p className="text-sm text-gray-600 mb-2">Confirmation Number</p>
+          <p className="text-sm text-gray-600 mb-2">{t.booking.confirmationNumber}</p>
           <p className="text-3xl font-bold text-primary-600">{confirmationNumber}</p>
           <div className="mt-4 pt-4 border-t border-gray-200 text-left">
-            <p className="text-sm text-gray-600">Service: {selectedService?.name}</p>
-            <p className="text-sm text-gray-600">Time: {formatDateTime(selectedSlot!)}</p>
-            <p className="text-sm text-gray-600">Email: {customerEmail}</p>
+            <p className="text-sm text-gray-600">{t.booking.service}: {selectedService?.name}</p>
+            <p className="text-sm text-gray-600">{t.booking.time}: {formatDateTime(selectedSlot!)}</p>
+            <p className="text-sm text-gray-600">{t.booking.email}: {customerEmail}</p>
           </div>
         </div>
         <p className="text-sm text-gray-500">
-          A confirmation email has been sent to {customerEmail}
+          {t.booking.confirmationEmail} {customerEmail}
         </p>
       </div>
     )
@@ -204,10 +206,10 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
     return (
       <form onSubmit={handleBooking} data-ai-booking-form className="space-y-6">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Details</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">{t.booking.yourDetails}</h3>
           
           <div className="bg-primary-50 rounded-lg p-4 mb-6">
-            <p className="text-sm text-primary-900 font-medium">Selected Time</p>
+            <p className="text-sm text-primary-900 font-medium">{t.booking.selectedTime}</p>
             <p className="text-primary-700">{formatDateTime(selectedSlot!)}</p>
             <p className="text-sm text-primary-700 mt-1">{selectedService?.name}</p>
           </div>
@@ -215,7 +217,7 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
           <div className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name *
+                {t.booking.name} *
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -235,7 +237,7 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email *
+                {t.booking.email} *
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -255,7 +257,7 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
 
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                Phone (optional)
+                {t.booking.phone}
               </label>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -280,14 +282,16 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
             onClick={() => setStep('time')}
             className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
           >
-            Back
+            {t.booking.back}
           </button>
           <button
             type="submit"
             disabled={loading}
+            data-ai-action="confirm-booking"
+            aria-label="Confirm and complete your booking"
             className="flex-1 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
           >
-            {loading ? 'Booking...' : 'Confirm Booking'}
+            {loading ? t.booking.booking : t.booking.confirmBooking}
           </button>
         </div>
       </form>
@@ -304,23 +308,23 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
             onClick={() => setStep('service')}
             className="text-sm text-primary-600 hover:text-primary-700"
           >
-            ← Change service
+            {t.booking.changeService}
           </button>
           <h3 className="text-lg font-semibold text-gray-900 mt-2">
-            Select a time for {selectedService?.name}
+            {t.booking.selectTime} {selectedService?.name}
           </h3>
         </div>
 
         {loading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary-600 border-r-transparent"></div>
-            <p className="mt-4 text-gray-600">Loading availability...</p>
+            <p className="mt-4 text-gray-600">{t.booking.loading}</p>
           </div>
         ) : availableSlots.length === 0 ? (
           <div className="text-center py-12">
             <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600">No available slots in the next 14 days</p>
-            <p className="text-sm text-gray-500 mt-2">Please contact us directly</p>
+            <p className="text-gray-600">{t.booking.noSlots}</p>
+            <p className="text-sm text-gray-500 mt-2">{t.booking.contactDirect}</p>
           </div>
         ) : (
           <div className="space-y-6 max-h-[600px] overflow-y-auto">
@@ -360,7 +364,7 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
   // Step 1: Select Service
   return (
     <div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Choose a Service</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">{t.booking.selectService}</h3>
       <div className="space-y-3">
         {services.map((service) => (
           <button
@@ -378,7 +382,7 @@ export default function BookingWidget({ companySlug, services }: BookingWidgetPr
             <h4 className="font-semibold text-gray-900">{service.name}</h4>
             <div className="flex items-center mt-2 text-sm text-gray-600">
               <Clock className="h-4 w-4 mr-1" />
-              <span>{service.duration_minutes} minutes</span>
+              <span>{service.duration_minutes} {t.booking.minutes}</span>
               {service.price && (
                 <>
                   <span className="mx-2">•</span>

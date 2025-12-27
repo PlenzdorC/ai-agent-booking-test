@@ -1,39 +1,48 @@
+'use client'
+
 import Link from 'next/link'
 import { ArrowRight, Bot, Calendar, Zap, Shield, Clock, Globe } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 export default function HomePage() {
+  const { t } = useLanguage()
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-primary-50 to-white px-6 py-24 sm:py-32 lg:px-8">
         <div className="mx-auto max-w-7xl">
+          {/* Language Switcher */}
+          <div className="flex justify-end mb-4">
+            <LanguageSwitcher />
+          </div>
+          
           <div className="text-center">
             <div className="mb-8 inline-flex items-center rounded-full bg-primary-100 px-4 py-2 text-sm font-semibold text-primary-700">
               <Bot className="mr-2 h-4 w-4" />
-              AI-Native Booking Platform
+              {t.home.hero.badge}
             </div>
             <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
-              Book Appointments with
-              <span className="block text-primary-600">Just a Conversation</span>
+              {t.home.hero.title}
+              <span className="block text-primary-600">{t.home.hero.titleHighlight}</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-xl">
-              The world's first booking platform optimized for AI agents.
-              Your customers book through ChatGPT, Claude, or any AI assistant.
-              <span className="block mt-2 font-semibold">No apps. No hassle. Just talk.</span>
+              {t.home.hero.description}
+              <span className="block mt-2 font-semibold">{t.home.hero.descriptionBold}</span>
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
                 href="/register"
                 className="rounded-lg bg-primary-600 px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all"
               >
-                Start Free Trial
+                {t.home.hero.ctaPrimary}
                 <ArrowRight className="ml-2 inline h-5 w-5" />
               </Link>
               <Link
                 href="/demo"
                 className="text-lg font-semibold leading-6 text-gray-900 hover:text-primary-600 transition-colors"
               >
-                See Demo <span aria-hidden="true">→</span>
+                {t.home.hero.ctaSecondary} <span aria-hidden="true">→</span>
               </Link>
             </div>
           </div>
@@ -44,41 +53,41 @@ export default function HomePage() {
       <section className="bg-white px-6 py-24 sm:py-32 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
-            <h2 className="text-base font-semibold leading-7 text-primary-600">Everything you need</h2>
+            <h2 className="text-base font-semibold leading-7 text-primary-600">{t.home.features.title}</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Built for the AI-first future
+              {t.home.features.subtitle}
             </p>
           </div>
           <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             <Feature
               icon={<Bot className="h-8 w-8 text-primary-600" />}
-              title="AI-Native APIs"
-              description="OpenAPI specs, JSON-LD markup, and semantic endpoints that AI agents understand perfectly."
+              title={t.home.features.aiNative.title}
+              description={t.home.features.aiNative.description}
             />
             <Feature
               icon={<Zap className="h-8 w-8 text-primary-600" />}
-              title="Instant Setup"
-              description="Get your booking page live in minutes. No technical knowledge required."
+              title={t.home.features.instantSetup.title}
+              description={t.home.features.instantSetup.description}
             />
             <Feature
               icon={<Calendar className="h-8 w-8 text-primary-600" />}
-              title="Smart Scheduling"
-              description="Automatic conflict detection, buffer times, and multi-staff coordination."
+              title={t.home.features.smartScheduling.title}
+              description={t.home.features.smartScheduling.description}
             />
             <Feature
               icon={<Shield className="h-8 w-8 text-primary-600" />}
-              title="Secure by Default"
-              description="OAuth 2.0, encryption, and granular permissions for AI agent access."
+              title={t.home.features.secure.title}
+              description={t.home.features.secure.description}
             />
             <Feature
               icon={<Clock className="h-8 w-8 text-primary-600" />}
-              title="24/7 Availability"
-              description="AI agents work around the clock. Never miss a booking opportunity."
+              title={t.home.features.availability.title}
+              description={t.home.features.availability.description}
             />
             <Feature
               icon={<Globe className="h-8 w-8 text-primary-600" />}
-              title="Your Domain"
-              description="Custom subdomains or bring your own domain. Full white-label support."
+              title={t.home.features.yourDomain.title}
+              description={t.home.features.yourDomain.description}
             />
           </div>
         </div>
@@ -89,27 +98,27 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              How it works
+              {t.home.howItWorks.title}
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              Simple for you. Magic for your customers.
+              {t.home.howItWorks.subtitle}
             </p>
           </div>
           <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-3">
             <Step
               number="1"
-              title="Create Your Account"
-              description="Sign up and configure your services, hours, and team in minutes."
+              title={t.home.howItWorks.step1.title}
+              description={t.home.howItWorks.step1.description}
             />
             <Step
               number="2"
-              title="Get Your Booking Page"
-              description="Receive a beautiful, AI-optimized booking page at yourbusiness.agentbook.com"
+              title={t.home.howItWorks.step2.title}
+              description={t.home.howItWorks.step2.description}
             />
             <Step
               number="3"
-              title="Customers Book via AI"
-              description="Your customers simply ask ChatGPT or Claude to book - and it happens automatically."
+              title={t.home.howItWorks.step3.title}
+              description={t.home.howItWorks.step3.description}
             />
           </div>
         </div>
@@ -120,16 +129,16 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Perfect for any appointment-based business
+              {t.home.useCases.title}
             </h2>
           </div>
           <div className="mt-16 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
-            <UseCase emoji="🏥" name="Medical" />
-            <UseCase emoji="💇" name="Salons" />
-            <UseCase emoji="🍽️" name="Restaurants" />
-            <UseCase emoji="⚖️" name="Legal" />
-            <UseCase emoji="💼" name="Consulting" />
-            <UseCase emoji="🏋️" name="Fitness" />
+            <UseCase emoji="🏥" name={t.home.useCases.medical} />
+            <UseCase emoji="💇" name={t.home.useCases.salons} />
+            <UseCase emoji="🍽️" name={t.home.useCases.restaurants} />
+            <UseCase emoji="⚖️" name={t.home.useCases.legal} />
+            <UseCase emoji="💼" name={t.home.useCases.consulting} />
+            <UseCase emoji="🏋️" name={t.home.useCases.fitness} />
           </div>
         </div>
       </section>
@@ -138,24 +147,23 @@ export default function HomePage() {
       <section className="bg-primary-600 px-6 py-24 sm:py-32 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Ready to join the AI-first revolution?
+            {t.home.cta.title}
           </h2>
           <p className="mt-6 text-lg leading-8 text-primary-100">
-            Start with our free plan. No credit card required.
-            Be among the first businesses accessible to billions of AI agent users.
+            {t.home.cta.description}
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link
               href="/register"
               className="rounded-lg bg-white px-6 py-3 text-lg font-semibold text-primary-600 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all"
             >
-              Get Started Free
+              {t.home.cta.primary}
             </Link>
             <Link
               href="/pricing"
               className="text-lg font-semibold leading-6 text-white hover:text-primary-100 transition-colors"
             >
-              View Pricing <span aria-hidden="true">→</span>
+              {t.home.cta.secondary} <span aria-hidden="true">→</span>
             </Link>
           </div>
         </div>
@@ -166,42 +174,42 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 mb-8">
             <div>
-              <h3 className="text-white font-semibold mb-4">For Businesses</h3>
+              <h3 className="text-white font-semibold mb-4">{t.home.footer.businesses}</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/register" className="hover:text-white transition-colors">Sign Up</Link></li>
-                <li><Link href="/demo" className="hover:text-white transition-colors">Demo</Link></li>
-                <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link href="/register" className="hover:text-white transition-colors">{t.common.signUp}</Link></li>
+                <li><Link href="/demo" className="hover:text-white transition-colors">{t.common.demo}</Link></li>
+                <li><Link href="/pricing" className="hover:text-white transition-colors">{t.common.pricing}</Link></li>
               </ul>
             </div>
             <div>
-              <h3 className="text-white font-semibold mb-4">For Developers</h3>
+              <h3 className="text-white font-semibold mb-4">{t.home.footer.developers}</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/ai-docs" className="hover:text-white transition-colors">API Documentation</Link></li>
-                <li><Link href="/api/ai/openapi.json" className="hover:text-white transition-colors">OpenAPI Spec</Link></li>
-                <li><a href="https://github.com" className="hover:text-white transition-colors">GitHub</a></li>
+                <li><Link href="/ai-docs" className="hover:text-white transition-colors">{t.home.footer.apiDocs}</Link></li>
+                <li><Link href="/api/ai/openapi.json" className="hover:text-white transition-colors">{t.home.footer.openApiSpec}</Link></li>
+                <li><a href="https://github.com" className="hover:text-white transition-colors">{t.common.github}</a></li>
               </ul>
             </div>
             <div>
-              <h3 className="text-white font-semibold mb-4">🤖 AI Agents</h3>
+              <h3 className="text-white font-semibold mb-4">{t.home.footer.aiAgents}</h3>
               <p className="text-gray-400 text-sm">
-                Looking to integrate booking capabilities? Visit our{' '}
+                {t.home.footer.aiAgentsText}{' '}
                 <Link href="/ai-docs" className="text-primary-400 hover:text-primary-300">
-                  AI API documentation
+                  {t.home.footer.apiDocs}
                 </Link>
                 {' '}or access our{' '}
                 <Link href="/api/ai/openapi.json" className="text-primary-400 hover:text-primary-300">
-                  OpenAPI specification
+                  {t.home.footer.openApiSpec}
                 </Link>.
               </p>
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
             <div className="mb-4">
-              <Link href="/privacy" className="text-gray-400 hover:text-white mx-3">Privacy Policy</Link>
+              <Link href="/privacy" className="text-gray-400 hover:text-white mx-3">{t.home.footer.privacy}</Link>
               <span className="text-gray-600">•</span>
-              <Link href="/ai-docs" className="text-gray-400 hover:text-white mx-3">API Docs</Link>
+              <Link href="/ai-docs" className="text-gray-400 hover:text-white mx-3">{t.home.footer.apiDocs}</Link>
             </div>
-            <p>&copy; 2025 AgentBook. Built for the AI-native future.</p>
+            <p>{t.home.footer.copyright}</p>
           </div>
         </div>
       </footer>
