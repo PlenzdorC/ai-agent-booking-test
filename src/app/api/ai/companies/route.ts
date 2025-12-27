@@ -16,10 +16,10 @@ export async function GET(request: NextRequest) {
 
     let query = supabase
       .from('companies')
-      .select('id, name, slug, description, city, state, country, phone, email, timezone, website')
+      .select('name, slug, description, city, state, phone')
       .eq('is_active', true)
       .order('name')
-      .limit(limit)
+      .limit(Math.min(limit, 10)) // Cap at 10 results for GPT
 
     // Filter by city
     if (city) {
@@ -51,42 +51,20 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // For each company, get service count
-    const companiesWithServices = await Promise.all(
-      (companies || []).map(async (company) => {
-        const { count } = await supabase
-          .from('services')
-          .select('*', { count: 'exact', head: true })
-          .eq('company_id', company.id)
-          .eq('is_active', true)
-
-        return {
-          ...company,
-          servicesCount: count || 0,
-          bookingUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'https://ai-agent-booking-test-4eol-oy1oxh8mr.vercel.app'}/${company.slug}`,
-          apiEndpoints: {
-            services: `/ai/services?company=${company.slug}`,
-            availability: `/ai/availability?company=${company.slug}&serviceId={serviceId}`,
-            book: `/ai/reservations`,
-          },
-        }
-      })
-    )
+    // Format companies with minimal info for GPT
+    const formattedCompanies = (companies || []).map((company) => ({
+      name: company.name,
+      slug: company.slug,
+      description: company.description,
+      city: company.city,
+      state: company.state,
+      phone: company.phone,
+    }))
 
     return NextResponse.json({
-      companies: companiesWithServices,
-      total: companiesWithServices.length,
-      filters: {
-        city,
-        state,
-        search,
-        category,
-      },
-      meta: {
-        message: companiesWithServices.length === 0 
-          ? 'No companies found matching your criteria. Try broader search terms.'
-          : `Found ${companiesWithServices.length} compan${companiesWithServices.length === 1 ? 'y' : 'ies'}`,
-      },
+      companies: formattedCompanies,
+      total: formattedCompanies.length,
+      instructions: 'To see services for a company, call /ai/services?company={slug}',
     })
   } catch (error) {
     console.error('Error in /ai/companies:', error)

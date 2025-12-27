@@ -80,15 +80,12 @@ export async function GET() {
                         items: {
                           type: 'object',
                           properties: {
-                            name: { type: 'string' },
-                            slug: { type: 'string' },
+                            name: { type: 'string', description: 'Company name' },
+                            slug: { type: 'string', description: 'Company slug - use this with /ai/services endpoint' },
                             description: { type: 'string' },
                             city: { type: 'string' },
                             state: { type: 'string' },
                             phone: { type: 'string' },
-                            email: { type: 'string' },
-                            servicesCount: { type: 'number' },
-                            bookingUrl: { type: 'string' },
                           },
                         },
                       },
