@@ -16,6 +16,7 @@ export async function GET() {
         name: 'AgentBook API Support',
         email: 'api@agentbook.com',
       },
+      termsOfService: `${process.env.NEXT_PUBLIC_APP_URL || 'https://ai-agent-booking-test-4eol-oy1oxh8mr.vercel.app'}/privacy`,
     },
     servers: [
       {

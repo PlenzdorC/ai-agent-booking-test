@@ -196,6 +196,11 @@ export default function HomePage() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
+            <div className="mb-4">
+              <Link href="/privacy" className="text-gray-400 hover:text-white mx-3">Privacy Policy</Link>
+              <span className="text-gray-600">•</span>
+              <Link href="/ai-docs" className="text-gray-400 hover:text-white mx-3">API Docs</Link>
+            </div>
             <p>&copy; 2025 AgentBook. Built for the AI-native future.</p>
           </div>
         </div>
