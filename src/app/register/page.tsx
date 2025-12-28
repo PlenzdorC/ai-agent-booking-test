@@ -14,6 +14,11 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [description, setDescription] = useState('')
+  const [address, setAddress] = useState('')
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
+  const [postalCode, setPostalCode] = useState('')
+  const [country, setCountry] = useState('USA')
   const [timezone, setTimezone] = useState('America/New_York')
 
   // Service info
@@ -44,6 +49,11 @@ export default function RegisterPage() {
           email,
           phone,
           description,
+          address,
+          city,
+          state,
+          postal_code: postalCode,
+          country,
           timezone,
           service: {
             name: serviceName,
@@ -188,6 +198,81 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
+                  <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+                    Street Address
+                  </label>
+                  <input
+                    type="text"
+                    id="address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    placeholder="123 Main Street"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="New York"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
+                      State/Province
+                    </label>
+                    <input
+                      type="text"
+                      id="state"
+                      value={state}
+                      onChange={(e) => setState(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="NY"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700 mb-1">
+                      Postal Code
+                    </label>
+                    <input
+                      type="text"
+                      id="postalCode"
+                      value={postalCode}
+                      onChange={(e) => setPostalCode(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="10001"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                      Country
+                    </label>
+                    <select
+                      id="country"
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    >
+                      <option value="USA">United States</option>
+                      <option value="Deutschland">Germany</option>
+                      <option value="UK">United Kingdom</option>
+                      <option value="Canada">Canada</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
                   <label htmlFor="timezone" className="block text-sm font-medium text-gray-700 mb-1">
                     Timezone *
                   </label>
@@ -204,6 +289,7 @@ export default function RegisterPage() {
                     <option value="America/Los_Angeles">Pacific Time (PT)</option>
                     <option value="Europe/London">London (GMT)</option>
                     <option value="Europe/Paris">Paris (CET)</option>
+                    <option value="Europe/Berlin">Berlin (CET)</option>
                   </select>
                 </div>
               </div>

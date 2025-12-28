@@ -10,10 +10,12 @@ const RegisterSchema = z.object({
   email: z.string().email('Invalid email address'),
   phone: z.string().optional(),
   description: z.string().optional(),
-  timezone: z.string().default('America/New_York'),
+  address: z.string().optional(),
   city: z.string().optional(),
   state: z.string().optional(),
+  postal_code: z.string().optional(),
   country: z.string().default('USA'),
+  timezone: z.string().default('America/New_York'),
   service: z.object({
     name: z.string().min(2, 'Service name must be at least 2 characters'),
     duration_minutes: z.number().min(5).max(480),
