@@ -110,8 +110,18 @@ export const de = {
     demo: 'Demo',
     pricing: 'Preise',
     github: 'GitHub',
+    getStarted: 'Jetzt starten',
+    contactUs: 'Kontakt aufnehmen',
+    bookDemo: 'Demo buchen',
+    learnMore: 'Mehr erfahren',
+    theProblem: 'Das Problem',
+    theSolution: 'Die Lösung',
+    howItWorks: 'So funktioniert es',
+    benefits: 'Vorteile',
   },
 }
+
+export type Translation = typeof de
 
 export type Translation = typeof de
 

@@ -112,6 +112,14 @@ export const en: Translation = {
     demo: 'Demo',
     pricing: 'Pricing',
     github: 'GitHub',
+    getStarted: 'Get Started',
+    contactUs: 'Contact Us',
+    bookDemo: 'Book a Demo',
+    learnMore: 'Learn More',
+    theProblem: 'The Problem',
+    theSolution: 'The Solution',
+    howItWorks: 'How It Works',
+    benefits: 'Benefits',
   },
 }
 

@@ -134,12 +134,12 @@ export default function HomePage() {
             </h2>
           </div>
           <div className="mt-16 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
-            <UseCase image="/images/categories/medical.png" name={t.home.useCases.medical} />
-            <UseCase image="/images/categories/salons.png" name={t.home.useCases.salons} />
-            <UseCase image="/images/categories/restaurants.png" name={t.home.useCases.restaurants} />
-            <UseCase image="/images/categories/legal.png" name={t.home.useCases.legal} />
-            <UseCase image="/images/categories/consulting.png" name={t.home.useCases.consulting} />
-            <UseCase image="/images/categories/fitness.png" name={t.home.useCases.fitness} />
+            <UseCase image="/images/categories/medical.png" name={t.home.useCases.medical} href="/industries/medical" />
+            <UseCase image="/images/categories/salons.png" name={t.home.useCases.salons} href="/industries/salons" />
+            <UseCase image="/images/categories/restaurants.png" name={t.home.useCases.restaurants} href="/industries/restaurants" />
+            <UseCase image="/images/categories/legal.png" name={t.home.useCases.legal} href="/industries/legal" />
+            <UseCase image="/images/categories/consulting.png" name={t.home.useCases.consulting} href="/industries/consulting" />
+            <UseCase image="/images/categories/fitness.png" name={t.home.useCases.fitness} href="/industries/fitness" />
           </div>
         </div>
       </section>
@@ -258,9 +258,12 @@ function Step({
   )
 }
 
-function UseCase({ image, name }: { image: string; name: string }) {
+function UseCase({ image, name, href }: { image: string; name: string; href: string }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-white overflow-hidden hover:border-primary-300 hover:shadow-lg transition-all group">
+    <Link 
+      href={href}
+      className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-white overflow-hidden hover:border-primary-300 hover:shadow-lg transition-all group cursor-pointer"
+    >
       <div className="w-full h-32 relative overflow-hidden bg-gray-100">
         <Image 
           src={image} 
@@ -271,8 +274,10 @@ function UseCase({ image, name }: { image: string; name: string }) {
         />
       </div>
       <div className="p-4 w-full bg-white">
-        <div className="text-sm font-semibold text-gray-900 text-center">{name}</div>
+        <div className="text-sm font-semibold text-gray-900 text-center group-hover:text-primary-600 transition-colors">
+          {name}
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }
