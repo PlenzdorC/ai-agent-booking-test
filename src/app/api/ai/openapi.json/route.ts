@@ -358,6 +358,119 @@ export async function GET() {
         },
       },
     },
+    '/ai/medical/search': {
+      get: {
+        operationId: 'searchMedicalProviders',
+        summary: 'Search for healthcare providers',
+        description: 'Find medical practices, clinics, and healthcare providers. Returns only medical/healthcare businesses.',
+        tags: ['Medical'],
+        parameters: [
+          {
+            name: 'city',
+            in: 'query',
+            required: false,
+            schema: { type: 'string' },
+            description: 'Filter by city',
+          },
+          {
+            name: 'state',
+            in: 'query',
+            required: false,
+            schema: { type: 'string' },
+            description: 'Filter by state',
+          },
+          {
+            name: 'specialty',
+            in: 'query',
+            required: false,
+            schema: { type: 'string' },
+            description: 'Medical specialty (e.g., "dental", "dermatology", "general practice")',
+          },
+          {
+            name: 'search',
+            in: 'query',
+            required: false,
+            schema: { type: 'string' },
+            description: 'General search term',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'List of healthcare providers',
+          },
+        },
+      },
+    },
+    '/ai/medical/practitioners': {
+      get: {
+        operationId: 'listPractitioners',
+        summary: 'List doctors and healthcare providers',
+        description: 'Get list of doctors, dentists, or healthcare staff at a medical practice',
+        tags: ['Medical'],
+        parameters: [
+          {
+            name: 'company',
+            in: 'query',
+            required: true,
+            schema: { type: 'string' },
+            description: 'Medical practice slug',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'List of practitioners',
+          },
+        },
+      },
+    },
+    '/ai/medical/reservations': {
+      post: {
+        operationId: 'createMedicalAppointment',
+        summary: 'Book a medical appointment',
+        description: 'Create a medical appointment with healthcare-specific information like insurance, reason for visit, allergies, etc.',
+        tags: ['Medical'],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['companySlug', 'serviceId', 'slot', 'patient'],
+                properties: {
+                  companySlug: { type: 'string', description: 'Medical practice slug' },
+                  serviceId: { type: 'string', format: 'uuid', description: 'Service/procedure ID' },
+                  slot: { type: 'string', format: 'date-time', description: 'Appointment datetime' },
+                  patient: {
+                    type: 'object',
+                    required: ['name', 'email'],
+                    properties: {
+                      name: { type: 'string', description: 'Patient full name' },
+                      email: { type: 'string', format: 'email', description: 'Patient email' },
+                      phone: { type: 'string', description: 'Patient phone number' },
+                      dateOfBirth: { type: 'string', format: 'date', description: 'Patient date of birth (YYYY-MM-DD)' },
+                      insuranceProvider: { type: 'string', description: 'Insurance provider name (e.g., BlueCross, Aetna)' },
+                      reasonForVisit: { type: 'string', description: 'Chief complaint or reason for appointment' },
+                      allergies: { type: 'string', description: 'Known allergies' },
+                      currentMedications: { type: 'string', description: 'Current medications' },
+                    },
+                  },
+                  notes: { type: 'string', description: 'Additional notes' },
+                  agentName: { type: 'string', description: 'Name of AI agent making the booking' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: 'Medical appointment created successfully',
+          },
+          409: {
+            description: 'Time slot no longer available',
+          },
+        },
+      },
+    },
     components: {
       schemas: {},
       securitySchemes: {
