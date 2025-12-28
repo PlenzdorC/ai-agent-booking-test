@@ -31,18 +31,40 @@ export default function RegisterPage() {
     setLoading(true)
 
     try {
-      // In a real app, this would call your API
-      // For now, we'll simulate the registration
-      await new Promise(resolve => setTimeout(resolve, 2000))
-
       // Generate slug from company name
       const slug = companyName.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
-      // Redirect to the new company page
+      // Call registration API
+      const response = await fetch('/api/companies/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: companyName,
+          slug,
+          email,
+          phone,
+          description,
+          timezone,
+          service: {
+            name: serviceName,
+            duration_minutes: parseInt(serviceDuration),
+            price: servicePrice ? parseFloat(servicePrice) : null,
+            currency: 'USD',
+          },
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Registration failed')
+      }
+
+      // Success! Redirect to the new company booking page
       router.push(`/${slug}`)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration error:', error)
-      alert('Registration failed. Please try again.')
+      alert(error.message || 'Registration failed. Please try again.')
     } finally {
       setLoading(false)
     }
