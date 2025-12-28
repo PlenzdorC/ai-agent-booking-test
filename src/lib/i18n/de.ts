@@ -123,5 +123,3 @@ export const de = {
 
 export type Translation = typeof de
 
-export type Translation = typeof de
-
